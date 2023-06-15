@@ -28,9 +28,40 @@ function DrawBar(dataset){
         'padding' : '4px',
         'background' : '#fff',
         'border' : '1px solid #000',
+        'color' : '#000'
     });
 
-    const svg = d3.select("#barGraph").append("svg")
+
+
+    function mouseoverHandler(d){
+        tooltip.transition().style('opacity', .8)
+        tooltip.style({
+            'left' : (d3.event.pageX + 10) + 'px',
+            'top' : (d3.event.pageY + 15) + 'px'
+        })
+        .html('<p> Date: ' + d[0] + '</p>'
+                + '<p> Billions: ' + d[1] + '</p>')
+
+        d3.select(this)
+            .style('opacity', .1);
+    }
+
+    function mouseoutHandler(d){
+        tooltip.transition().style('opacity', 0)
+        d3.select(this)
+            .style('opacity', 1);
+    }
+
+    function mouseMoving(d){
+        tooltip
+            .style("top", (d3.event.pageY -10)+ "px")
+            .style("left",(d3.event.pageX +10)+"px");
+        d3.select(this)
+            .style('opacity', 0.8);
+    }
+
+    const svg = d3.select("#barGraph")
+        .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .attr("class", "graph-svg-component")
@@ -43,11 +74,36 @@ function DrawBar(dataset){
                 y: function(d) { return yAxis_scale(d[1]); },
                 width: (width / dataset.length),
                 height: function(d){ return height - yAxis_scale(d[1]); }
-        })
+    })
+
+    .on('mouseover', mouseoverHandler)
+    .on('mouseovering', mouseMoving)
+    .on('mouseover', mouseoutHandler)
+
+        svg.append("g")
+            .attr("transform", "translate(0, "+ height +")")
+            .call(xAxis)
+            .selectAll("text-anchor", "end")
+            .attr("dx", "0.5em")
+            .attr("dy", ".55em")
+            .attr("y", 30)
+            .attr("transform", "rotate(-45)")
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -85)
+            .attr("dy", "0.8em")
+            .style("text-anchor", "end")
+            .text("Value(billions)")    
+
+    svg.append("g")
 
 }
 
-d3.csv("/data/fastfood.csv", function(data){
+d3.csv("./data/healthcare-dataset-stroke-data.csv", function(data){
     const dataset = data.data;
     DrawBar(dataset);
 });

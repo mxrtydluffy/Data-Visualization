@@ -6,16 +6,33 @@
     <title>D3 Visulization Project</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
-        .bar{
-            fill: peru;
+
+        body{
+            background: lightblue;
         }
+
+        .axis{
+            font: 15px Arial, sans-serif;
+        }
+
+        .graph-sv-component{
+            background-color: whitesmoke;
+            display: block;
+            margin: auto;
+        }
+
+        .axis path, .axis line{
+            fill: none;
+            stroke: #3A3A3A
+        }
+
     </style>
 </head>
 <body>
     <div style="text-align: center;">
-        <h1>Food Bar Chart</h1>
+        <h1>Stroke Prediction</h1>
 
-        <div id="d3-container"></div>
+        <div class="graph" id="barGraph"></div>
 
     </div>
     <script src="index.js"></script>
