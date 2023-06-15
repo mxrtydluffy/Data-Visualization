@@ -1,57 +1,53 @@
-const data = './fastfood.csv'
+function DrawBar(dataset){
+    const margin = {top: 50, right: 20, bottom: 50, left: 100}
+    width = 800,
+    height = 400
 
-const width = 900;
-const height = 400;
+    // X & Y domain
+    const minDate = dataset[0][0].substr(0,4);
+        minDate = new Date(minDate);
+    const maxDate = dataset[dataset.length-1][0].substr(0,4);
+        maxDate = new Date(maxDate);
 
-const margin = { top: 50, bottom: 50, left: 50, right: 50 }
+    const xAxis_scale = d3.time.scale()
+        .domain([minDate, maxDate])
+        .range([0, width]);
 
-// Displays SVG
-const svg = d3.select('#d3-container')
-    .append('svg')
-    .attr('height', height - margin.top - margin.bottom)
-    .attr('width', width - margin.left -margin.right)
-    .attr('viewBox', [0, 0, width, height]);
+    const yAxis_scale = d3.time.linear()
+        .domain([0, d3.max(dataset, function(d){
+            return d[1];
+        })
+    ])
+        .range([height, 0]);
 
-// X Axis
-const x = d3.scaleBand()
-    .domain(d3.range(data.length))
-    .range([margin.left, width - margin.right])
-    .padding(0.1)
+    const xAxis = d3.svg.axis().scale(xAxis_scale).orient("bottom");
+    const yAxis = d3.svg.axis().scale(yAxis_scale).orient("left");
 
-// Y Axis
-const y = d3.scaleLinear()
-    .domain([0, 100])
-    .range([height - margin.bottom, margin.top])
+    const tooltip = d3.select('body')('div').style({
+        'position' : 'absolute',
+        'padding' : '4px',
+        'background' : '#fff',
+        'border' : '1px solid #000',
+    });
 
-// Creating boundaries
-svg
-    .append('g')
-    .attr('fill', 'royalblue')
-    .selectAll('rect')
-    // Compare calories in descending order
-    .data(data.sort((a, b) => d3.descending(a.calories, b.calories)))
-    .join('rect')
-        // Place in correct position
-        .attr('x', (d, i) => x(i))
-        .attr('y', (d) => y(d.score))
-        .attr('height', d => y(0) - y(d.score))
-        .attr('width', x.bandwidth())
-        .attr('title', (d) => d.score)
-        .attr("class", "rect")
+    const svg = d3.select("#barGraph").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("class", "graph-svg-component")
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-function yAxis(g) {
-    g.attr("transform", `translate(${margin.left}, 0)`)
-        .call(d3.axisLeft(y).ticks(null, data.format))
-        .attr("font-size", '20px')
-    }
-    
-    function xAxis(g) {
-    g.attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x).tickFormat(i => data[i].name))
-        .attr("font-size", '20px')
-    }
+    svg.selectAll("bar").data(dataset).enter().append("rect").style("fill", "orangered")
+        .attr({
+            x: function(d, i) { return ( i * (width/dataset.length)); },
+                y: function(d) { return yAxis_scale(d[1]); },
+                width: (width / dataset.length),
+                height: function(d){ return height - yAxis_scale(d[1]); }
+        })
 
-svg.append("g").call(xAxis);
-svg.append("g").call(yAxis);
-// Draw the boundaries
-svg.node()
+}
+
+d3.csv("/data/fastfood.csv", function(data){
+    const dataset = data.data;
+    DrawBar(dataset);
+});
