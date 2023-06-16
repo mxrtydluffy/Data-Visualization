@@ -54,7 +54,7 @@
         .attr('class', 'bar')
         .attr('x', d => xScale(d.age))
         .attr('y', d => yScale(d.avg_glucose_level))
-        .attr('width', 5) // Adjust the width of bars as needed
+        .attr('width', 5)
         .attr('height', d => chartHeight - yScale(d.avg_glucose_level))
         .attr('fill', 'steelblue');
 
@@ -63,7 +63,7 @@
         .attr('class', 'x-axis-label')
         .attr('text-anchor', 'middle')
         .attr('x', chartWidth / 2)
-        .attr('y', chartHeight + margin.bottom - 10) // Adjust the y-coordinate to provide space for the label
+        .attr('y', chartHeight + margin.bottom - 10)
         .text('Age');
 
         // Y-axis
