@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Doughnut Chart from CSV Dataset</title>
+  
+  <style>
+    canvas {
+      display: block;
+      margin: 20px auto;
+    }
+
+  </style>
+</head>
+<body>
+
+    <h2>UFO Sightings Shape</h2>
+    <div class="sighting-stats">
+        <div class="ufo-container">
+            <canvas class="ufo-chart"></canvas>
+        </div>
+
+        <div class="details">
+            <ul>
+                <li>
+                    Light: <span class="percentage">20%</span>
+                    Triangle: <span class="pecentage">10%</span>
+                    Other: <span class="percentage">70%</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./index.js"></script>
+
+</body>
+</html>

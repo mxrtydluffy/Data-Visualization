@@ -1,92 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stroke Barchart</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Centered Card Boxes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+    </style>
 </head>
-<style>
-    body{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: bisque;
-    }
-</style>
 <body>
-    <h1>Glucose Levels | Stroke Dataset</h1>
-    <script>
-    d3.csv("./data/healthcare-dataset-stroke-data.csv").then(data => {
-        // Extract age and average glucose levels
-        const extractedData = data.map(d => ({
-        age: +d.age,
-        avg_glucose_level: +d.avg_glucose_level
-        }));
-
-        const width = 810;
-        const height = 450;
-        const margin = { top: 20, right: 20, bottom: 50, left: 55 };
-        const chartWidth = width - margin.left - margin.right;
-        const chartHeight = height - margin.top - margin.bottom;
-
-        const svg = d3.select('body')
-        .append('svg')
-        .attr('width', width)
-        .attr('height', height);
-
-        const chart = svg.append('g')
-        .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-        const xScale = d3.scaleLinear()
-        .range([0, chartWidth])
-        .domain(d3.extent(extractedData, d => d.age));
-
-        const yScale = d3.scaleLinear()
-        .range([chartHeight, 0])
-        .domain([0, d3.max(extractedData, d => d.avg_glucose_level)]);
-
-        chart.selectAll('.bar')
-        .data(extractedData)
-        .enter()
-        .append('rect')
-        .attr('class', 'bar')
-        .attr('x', d => xScale(d.age))
-        .attr('y', d => yScale(d.avg_glucose_level))
-        .attr('width', 5) // Adjust the width of bars as needed
-        .attr('height', d => chartHeight - yScale(d.avg_glucose_level))
-        .attr('fill', 'steelblue');
-
-        // X-axis
-        chart.append('text')
-        .attr('class', 'x-axis-label')
-        .attr('text-anchor', 'middle')
-        .attr('x', chartWidth / 2)
-        .attr('y', chartHeight + margin.bottom - 10) // Adjust the y-coordinate to provide space for the label
-        .text('Age');
-
-        // Y-axis
-        chart.append('text')
-        .attr('class', 'y-axis-label')
-        .attr('text-anchor', 'middle')
-        .attr('x', -chartHeight / 2)
-        .attr('y', -margin.left + 18)
-        .attr('transform', 'rotate(-90)')
-        .text('Average Glucose Levels');
-
-        // Append X-axis
-        chart.append('g')
-        .attr('transform', `translate(0, ${chartHeight})`)
-        .call(d3.axisBottom(xScale));
-
-        // Append Y-axis
-        chart.append('g')
-        .call(d3.axisLeft(yScale));
-
-    }).catch(error => {
-        console.log(error);
-    });
-    </script>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Visualization 1</h5>
+                        <a href="./viz_1/home.html">
+                          <p class="card-text">Bar Chart</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Visualization 2</h5>
+                        <a href="./viz_2/home.html">
+                          <p class="card-text">Doughnut Chart</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 3</h5>
+                        <p class="card-text">This is the content of card 3.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
