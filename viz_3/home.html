@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Radar Chart Example</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0"></script>
+</head>
+<body>
+  <canvas id="radarChart"></canvas>
+  <script>
+    // Load the first CSV file and extract the relevant data for dataset1
+    Papa.parse('./data/largest-banks.csv', {
+      download: true,
+      header: true,
+      complete: function (results1) {
+        const dataset1 = results1.data.map(row => parseFloat(row['Total assets 2022 (US$ billion)']));
+
+        // Load the second CSV file and extract the relevant data for dataset2
+        Papa.parse('./data/top-100-banks.csv', {
+          download: true,
+          header: true,
+          complete: function (results2) {
+            const dataset2 = results2.data.map(row => parseFloat(row['total_assets_us_b']));
+
+            // Continue creating the chart
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            new Chart(ctx, {
+              type: 'radar',
+              data: {
+                labels: ['Bank 1', 'Bank 2', 'Bank 3', 'Bank 4', 'Bank 5'],
+                datasets: [
+                  {
+                    label: 'Total Assets 2022',
+                    data: dataset1,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(255, 99, 132, 1)',
+                  },
+                  {
+                    label: 'Total Assets 2017',
+                    data: dataset2,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
+                  },
+                ],
+              },
+              options: {
+                scale: {
+                  ticks: { beginAtZero: true },
+                },
+              },
+            });
+          },
+        });
+      },
+    });
+  </script>
+</body>
+</html>
