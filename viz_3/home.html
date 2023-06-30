@@ -1,66 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Radar Chart Example</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0"></script>
+    <title>Scatter Chart with Chart.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+    <style>
+
+        body {
+            background-color: bisque;
+        }
+
+        #scatterChart {
+            display: block;
+            margin: 0 auto;
+            max-width: 2000px;
+        }
+    </style>
+
 <body>
-  <canvas id="radarChart"></canvas>
-  <script>
-    // Load the first CSV file and extract the relevant data for dataset1
-    Papa.parse('./data/largest-banks.csv', {
-      download: true,
-      header: true,
-      complete: function (results1) {
-        const dataset1 = results1.data.map(row => parseFloat(row['Total assets 2022 (US$ billion)']));
+    <canvas id="scatterChart" width="1800" height="1800"></canvas>
 
-        // Load the second CSV file and extract the relevant data for dataset2
-        Papa.parse('./data/top-100-banks.csv', {
-          download: true,
-          header: true,
-          complete: function (results2) {
-            const dataset2 = results2.data.map(row => parseFloat(row['total_assets_us_b']));
+    <script>
+        // Path to the locally stored CSV file
+        const csvFilePath = './data/RBLX.csv';
 
-            // Continue creating the chart
-            const ctx = document.getElementById('radarChart').getContext('2d');
-            new Chart(ctx, {
-              type: 'radar',
-              data: {
-                labels: ['Bank 1', 'Bank 2', 'Bank 3', 'Bank 4', 'Bank 5'],
-                datasets: [
-                  {
-                    label: 'Total Assets 2022',
-                    data: dataset1,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(255, 99, 132, 1)',
-                  },
-                  {
-                    label: 'Total Assets 2017',
-                    data: dataset2,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
-                  },
-                ],
-              },
-              options: {
-                scale: {
-                  ticks: { beginAtZero: true },
-                },
-              },
+        // Fetching the data from the local CSV file
+        async function fetchData() {
+            const response = await fetch(csvFilePath);
+            const data = await response.text();
+            return data;
+        }
+
+        // Parsing the CSV data
+        function parseData(csvData) {
+            const rows = csvData.split('\n').slice(1); // Remove the header row
+
+            const highData = [];
+            const lowData = [];
+
+            // Parsing the High and Low columns
+            rows.forEach(row => {
+                const columns = row.split(',');
+                const high = parseFloat(columns[2]);
+                const low = parseFloat(columns[3]);
+
+                highData.push(high);
+                lowData.push(low);
             });
-          },
-        });
-      },
-    });
-  </script>
+
+            return {
+                highData,
+                lowData
+            };
+        }
+
+        // Creating the scatter chart
+        function createChart(highData, lowData) {
+            const ctx = document.getElementById('scatterChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Roblox Stock Pricing',
+                        data: highData.map((value, index) => ({ x: value, y: lowData[index] })),
+                        backgroundColor: 'rgba(255, 253, 208)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        pointHitRadius: 10,
+                        pointBackgroundColor: 'rgba(0, 27, 59)',
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Highest Price'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Lowest Price'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fetch data, parse it, and create the chart
+        fetchData()
+            .then(parseData)
+            .then(data => {
+                createChart(data.highData, data.lowData);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
 </body>
 </html>

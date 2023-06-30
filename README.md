@@ -31,6 +31,22 @@ Question #3
 
 - How many documented UFO shape types are around 6k?
 
+## Project #3
+
+Question #1
+
+- Out of all the dates, what is the highest and lowest price?
+
+Question #2
+
+- What is the highest value of one date that exceed $140?
+
+Question #3
+
+- Where in the scatter plot shows a high relation in lowest and highest price values?
+
 Data source #1 [link](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset?select=healthcare-dataset-stroke-data.csv)
 
 Data source #2 [link](https://www.kaggle.com/datasets/NUFORC/ufo-sightings)
+
+Data source #3 [link](https://www.kaggle.com/datasets/arslanr369/roblox-stock-pricing-2021-2023)
