@@ -18,7 +18,12 @@
     </style>
 
 <body>
-    <canvas id="scatterChart" width="1800" height="1800"></canvas>
+    <div style=" text-align:center">
+        <h1 style='font-family:"Arial, Helvetica";'>Reddit Bitcoin Price
+        <br>
+        <canvas id="scatterChart" width="1800" height="1800"></canvas>
+    </div>
+    
 
     <script>
         // Path to the locally stored CSV file
@@ -76,13 +81,13 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Highest Price'
+                                text: 'Highest Price (USD)'
                             }
                         },
                         y: {
                             title: {
                                 display: true,
-                                text: 'Lowest Price'
+                                text: 'Lowest Price (USD)'
                             }
                         }
                     }

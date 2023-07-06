@@ -6,26 +6,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   
   <style>
-    canvas {
-        width: 550px;
-        height: 550px;
-    }
 
     body {
+        background-color: bisque;
+    }
+
+    canvas {
+        width: 600px;
+        height: 600px;
+    }
+
+    #canvas {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 80vh;
-        background-color: bisque;
     }
   </style>
 
 </head>
 <body>
+    
+    <h1 style=" display: flex; justify-content: center;"> UFO shape types </h1>
 
-    <h1> UFO shape types </h1>
-
-    <canvas id="myChart"></canvas>
+    <div class="container-lg" id="canvas">
+        <canvas id="myChart"></canvas>
+    </div>
+    
 
     <script>
         // Load and parse the CSV data
