@@ -1,6 +1,6 @@
 # Data Visualization
 
-This repository showcases 3 Data Visualization projects that answers 3 questions.
+This repository showcases 3 data visualization projects that answers 3 questions. Data was retrieved via Kaggle understanding it's background. Libraries utilized were D3.js and chart.js
 
 # Project 1
 
